@@ -22,10 +22,7 @@ class SimplyHentai(object):
         api_key : str
             scathach.dev API key (optional)
         """
-        if api_key == "":
-            self.api_key = None
-        else:
-            self.api_key = api_key
+        self.api_key = api_key or None
         self.specs = {"api_key": self.api_key}
 
     async def get(self, path: str):
@@ -49,18 +46,18 @@ class SimplyHentai(object):
             The book object that represents the specific path response.
         """
 
-        if str(path).isdigit():
+        if path.isdigit():
             raise ValueError("Invalid path, must be a str")
 
         path = path.strip("/")
         self.specs["book"] = path
 
         try:
-            path = str(path)
+            path = path
 
         except ValueError or path.isdigit():
             raise ValueError("Path must be a str")
 
-        data = requests.get(BASE_URL.simply_hentai + "/get", params=self.specs)
+        data = requests.get(f"{BASE_URL.simply_hentai}/get", params=self.specs)
 
         return better_object(data.json())

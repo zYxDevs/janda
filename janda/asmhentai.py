@@ -28,10 +28,7 @@ class Asmhentai(object):
         api_key : str
             scathach.dev API key (optional)
         """
-        if api_key == "":
-            self.api_key = None
-        else:
-            self.api_key = api_key
+        self.api_key = api_key or None
         self.specs = {"api_key": self.api_key}
 
     async def get(self, id: int):
@@ -67,10 +64,10 @@ class Asmhentai(object):
         except ValueError or path.isdigit():
             raise ValueError("Path must be a str")
 
-        data = requests.get(BASE_URL.asmhentai + "/get", params=self.specs)
+        data = requests.get(f"{BASE_URL.asmhentai}/get", params=self.specs)
 
         if data.status_code != 200:
-            raise ValueError("No results found for " + id)
+            raise ValueError(f"No results found for {id}")
 
         return better_object(data.json())
 
@@ -105,7 +102,7 @@ class Asmhentai(object):
 
         if query == "":
             raise ValueError("Query must be given")
-        data = requests.get(BASE_URL.asmhentai + "/search", params=self.specs)
+        data = requests.get(f"{BASE_URL.asmhentai}/search", params=self.specs)
 
         if len(data.json()["data"]) == 0:
             raise ValueError("No results found")
@@ -121,6 +118,6 @@ class Asmhentai(object):
             The book object that represents the random doujin response.
         """
 
-        data = requests.get(BASE_URL.asmhentai + "/random", params=self.specs)
+        data = requests.get(f"{BASE_URL.asmhentai}/random", params=self.specs)
 
         return better_object(data.json())
