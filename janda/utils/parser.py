@@ -46,8 +46,7 @@ def list_api():
     -------
     list
     """
-    # create list of api
-    api_list = [
+    return [
         BASE_URL.nhentai,
         BASE_URL.pururin,
         BASE_URL.hentaifox,
@@ -55,7 +54,6 @@ def list_api():
         BASE_URL.simply_hentai,
         BASE_URL.asmhentai,
     ]
-    return api_list
 
 
 def auto_space(string: str):

@@ -48,11 +48,11 @@ class Nhentai(object):
         self.specs["book"] = book
 
         try:
-            book = int(book)
+            book = book
         except ValueError:
             raise ValueError("Book must be an int")
 
-        data = requests.get(BASE_URL.nhentai + "/get", params=self.specs)
+        data = requests.get(f"{BASE_URL.nhentai}/get", params=self.specs)
 
         self.final = json.loads(better_object(data.json()))
 
@@ -92,15 +92,13 @@ class Nhentai(object):
         self.specs["page"] = page
         self.specs["sort"] = sort
 
-        data = requests.get(BASE_URL.nhentai + "/search", params=self.specs)
+        data = requests.get(f"{BASE_URL.nhentai}/search", params=self.specs)
 
         if len(data.json()["data"]) == 0:
             raise ValueError("No results found")
 
         if data.status_code != 200:
-            raise ValueError(
-                "Request failed with status code {}".format(data.status_code)
-            )
+            raise ValueError(f"Request failed with status code {data.status_code}")
 
         return better_object(data.json())
 
@@ -125,12 +123,10 @@ class Nhentai(object):
 
         self.specs["book"] = book
 
-        data = requests.get(BASE_URL.nhentai + "/related", params=self.specs)
+        data = requests.get(f"{BASE_URL.nhentai}/related", params=self.specs)
 
         if data.status_code != 200:
-            raise ValueError(
-                "Request failed with status code {}".format(data.status_code)
-            )
+            raise ValueError(f"Request failed with status code {data.status_code}")
 
         return better_object(data.json())
 
@@ -148,11 +144,9 @@ class Nhentai(object):
             The book object that represents the random doujin response.
         """
 
-        data = requests.get(BASE_URL.nhentai + "/random", params=self.specs)
+        data = requests.get(f"{BASE_URL.nhentai}/random", params=self.specs)
 
         if data.status_code != 200:
-            raise ValueError(
-                "Request failed with status code {}".format(data.status_code)
-            )
+            raise ValueError(f"Request failed with status code {data.status_code}")
 
         return better_object(data.json())

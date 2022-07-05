@@ -26,10 +26,7 @@ class Hentai2read(object):
         api_key : str
             scathach.dev API key (optional)
         """
-        if api_key == "":
-            self.api_key = None
-        else:
-            self.api_key = api_key
+        self.api_key = api_key or None
         self.specs = {"api_key": self.api_key}
 
     async def get(self, path: str, chapter: int = 1):
@@ -59,14 +56,14 @@ class Hentai2read(object):
         if "/" in path:
             path = path.replace("/", "")
 
-        self.specs["book"] = path + "/" + str(chapter)
+        self.specs["book"] = f"{path}/{chapter}"
 
         try:
-            path = str(path)
+            path = path
         except ValueError:
             raise ValueError("Path must be a str")
 
-        data = requests.get(BASE_URL.hentai2read + "/get", params=self.specs)
+        data = requests.get(f"{BASE_URL.hentai2read}/get", params=self.specs)
 
         return better_object(data.json())
 
@@ -97,7 +94,7 @@ class Hentai2read(object):
 
         if query == "":
             raise ValueError("Query must be given")
-        data = requests.get(BASE_URL.hentai2read + "/search", params=self.specs)
+        data = requests.get(f"{BASE_URL.hentai2read}/search", params=self.specs)
 
         if len(data.json()["data"]) == 0:
             raise ValueError("No results found")
